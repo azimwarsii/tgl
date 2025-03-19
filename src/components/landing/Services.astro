@@ -67,9 +67,9 @@ const points = [
 <script>
 	import { gsap } from "gsap";
 	import { ScrollTrigger } from "gsap/ScrollTrigger";
-	import { MorphSVGPlugin } from "gsap-trial/MorphSVGPlugin";
+	import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
-	gsap.registerPlugin(ScrollTrigger, MorphSVGPlugin);
+	gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 	function init() {
 		var points = gsap.utils.toArray(".point") as gsap.DOMTarget[];

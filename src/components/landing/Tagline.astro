@@ -8,113 +8,135 @@ const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 ---
 
-<!-- The best thing? It's all in one -->
 <div id="smooth-wrapper" class:list={["section tagline-section relative bg-zinc-900 text-white", className]}>
-	<div class="tagline-arrows">
-		<svg
-			stroke-linecap="round"
-			class="h-[15rem] w-[15rem] rotate-45 md:w-[20rem] md:rotate-0 lg:w-[25rem]"
-			stroke-linejoin="round"
-			viewBox="0 0 550 330">
-			<path
-				id="tagline-arrow-path"
-				fill="none"
-				stroke="#fff"
-				stroke-width="10"
-				d="M8.5,7.8C46.3,67,121.7,185.5,265.5,185.9c42.8,0.1,120.5-55.9-25.2-120.3
-	C79-5.8,177.6,164.1,222.3,207.7c59.1,49.9,83.8,62.1,162.6,96.8">
-			</path>
-			<path class="opacity-0" id="tagline-arrow" stroke="white" stroke-width="12" d="M465.7 172.9l47.1 6-29.8 33.3-17.3-39.3z"></path>
-		</svg>
-	</div>
-	<div class="text col-span-12 flex justify-center font-light">
-		<p id="services-tagline" class="max-w-5xl text-center text-4xl md:text-5xl lg:text-7xl">
-			{t("tagline")}
-		</p>
-	</div>
+  <div class="tagline-arrows">
+    <svg
+      stroke-linecap="round"
+      class="h-[15rem] w-[15rem] rotate-45 md:w-[20rem] md:rotate-0 lg:w-[25rem]"
+      stroke-linejoin="round"
+      viewBox="0 0 550 330"
+    >
+      <path
+        id="tagline-arrow-path"
+        fill="none"
+        stroke="#fff"
+        stroke-width="10"
+        d="M8.5,7.8C46.3,67,121.7,185.5,265.5,185.9c42.8,0.1,120.5-55.9-25.2-120.3 C79-5.8,177.6,164.1,222.3,207.7c59.1,49.9,83.8,62.1,162.6,96.8"
+      />
+      <path class="opacity-0" id="tagline-arrow" stroke="white" stroke-width="12" d="M465.7 172.9l47.1 6-29.8 33.3-17.3-39.3z" />
+    </svg>
+  </div>
+  <div class="text col-span-12 flex justify-center font-light">
+    <p id="services-tagline" class="max-w-5xl text-center text-4xl md:text-5xl lg:text-7xl">
+      {t("tagline")}
+    </p>
+  </div>
 </div>
 
 <style>
-	.text > p > :global(div) {
-		background: linear-gradient(to right, rgb(255, 255, 255) 50%, rgb(37, 37, 37) 50%);
-		background-size: 200% 100%;
-		background-position-x: 100%;
-		color: transparent;
-		background-clip: text;
-		-webkit-background-clip: text;
-		line-height: 1.2;
-	}
+  .text > p > span {
+    display: inline-block;
+    background: linear-gradient(to right, rgb(255, 255, 255) 50%, rgb(37, 37, 37) 50%);
+    background-size: 200% 100%;
+    background-position-x: 100%;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    line-height: 1.2;
+  }
 </style>
 
 <script>
-	import { gsap } from "gsap";
-	import { ScrollTrigger } from "gsap/ScrollTrigger";
-	import { SplitText } from "gsap-trial/SplitText";
-	//import { DrawSVGPlugin } from "gsap-trial/DrawSVGPlugin";
-	import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
-	gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin, MotionPathPlugin);
+  gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-	function init() {
-		const linePath = document.querySelector("#tagline-arrow-path");
+  function init() {
+  // SVG Drawing Animation (unchanged)
+  const linePath = document.querySelector("#tagline-arrow-path");
+  const length = linePath.getTotalLength();
+  gsap.set(linePath, { strokeDasharray: length, strokeDashoffset: length });
 
-		gsap.set(linePath, { drawSVG: 0 });
+  let arrowTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".tagline-arrows",
+      start: "center bottom",
+      end: "center center",
+      scrub: 1,
+      markers: false, // Set to true for debugging
+    },
+  });
 
-		let otherQTl = gsap
-			.timeline({
-				scrollTrigger: {
-					trigger: ".tagline-arrows",
-					start: "center bottom",
-					end: "center center",
-					markers: false,
-					scrub: 1,
-				},
-			})
-			.to(
-				linePath,
-				{
-					drawSVG: "100%",
-				},
-				"<",
-			)
-			.to(
-				"#tagline-arrow",
-				{
-					opacity: 1,
-					duration: 0.1,
-				},
-				"<",
-			)
-			.to(
-				"#tagline-arrow",
-				{
-					motionPath: {
-						path: "#tagline-arrow-path",
-						align: "#tagline-arrow-path",
-						alignOrigin: [0.5, 0.5],
-						autoRotate: 30,
-					},
-				},
-				0,
-			);
+  arrowTl
+    .to(linePath, {
+      strokeDashoffset: 0,
+      ease: "none",
+      duration: 1,
+    })
+    .to(
+      "#tagline-arrow",
+      {
+        opacity: 1,
+        duration: 0.1,
+      },
+      "-=0.5"
+    )
+    .to(
+      "#tagline-arrow",
+      {
+        motionPath: {
+          path: "#tagline-arrow-path",
+          align: "#tagline-arrow-path",
+          alignOrigin: [0.5, 0.5],
+          autoRotate: 30,
+        },
+        ease: "power1.inOut",
+        duration: 1,
+      },
+      "-=0.8"
+    );
 
-		const split = new SplitText("#services-tagline", { type: "lines" });
+  // Text Animation with Word-Level Splitting (enhanced)
+  const tagline = document.querySelector("#services-tagline");
+  const words = tagline.textContent.trim().split(" ");
 
-		split.lines.forEach((target) => {
-			gsap.to(target, {
-				backgroundPositionX: 0,
-				ease: "none",
-				scrollTrigger: {
-					trigger: target,
-					markers: false,
-					scrub: 1,
-					start: "top bottom-=20%",
-					end: "bottom bottom-=10%",
-				},
-			});
-		});
-	}
+  // Wrap each word in a span
+  tagline.innerHTML = words
+    .map(word => `<span class="tagline-word inline-block opacity-0">${word}</span>`)
+    .join(" ");
 
-	document.removeEventListener("DOMContentLoaded", init); // astro:page-load
-	document.addEventListener("DOMContentLoaded", init); // astro:page-load
+  const spans = tagline.querySelectorAll(".tagline-word");
+
+  // Animate each word on scroll: fade, move up, and scale
+  gsap.fromTo(
+    spans,
+    {
+      y: 50,
+      opacity: 0,
+      scale: 0.8,
+      backgroundPositionX: "100%",
+    },
+    {
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      backgroundPositionX: "0%",
+      ease: "power3.out",
+      duration: 1,
+      stagger: 0.15,
+      scrollTrigger: {
+        trigger: tagline,
+        start: "top 70%",
+        end: "top 30%",
+        scrub: 1,
+        markers: false, // Set to true to debug positions
+      },
+    }
+  );
+}
+
+
+  document.addEventListener("DOMContentLoaded", init);
 </script>

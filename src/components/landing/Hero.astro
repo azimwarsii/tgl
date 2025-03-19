@@ -8,142 +8,189 @@ const translatePath = useTranslatedPath(lang);
 ---
 
 <section id="hero" class="section home-dark-section hero min-h-screen">
-	<div class="mx-auto flex h-full flex-col py-4 lg:py-10">
-		<div class="relative flex flex-1 flex-col justify-around rounded-lg pb-10 pt-20 lg:rounded-2xl">
-			<div class="flex justify-center">
-				<h1 class="text-center font-display text-5xl font-extrabold uppercase sm:text-7xl md:text-8xl lg:text-9xl">
-					<span>{t("hero.title.main")}</span>
-					<span class="rotator relative inline-flex h-20 w-full justify-center md:h-24 lg:h-32">
-						<span>{t("hero.title.1")}</span><span>{t("hero.title.2")}</span><span>{t("hero.title.3")}</span><span>
-							{t("hero.title.4")}
-						</span><span>{t("hero.title.1")}</span>
-					</span>
-				</h1>
-			</div>
-			<div class="flex flex-col items-center gap-5 text-center lg:gap-10">
-				<p class="mt-8 max-w-3xl font-mono lg:text-lg">
-					{t("hero.subtitle")}
-				</p>
-				<div class="flex flex-col items-center justify-center gap-3 lg:col-start-1">
-					<div class="squircle-bg rounded-lg bg-zinc-900" data-cursor-hover data-cursor-parallax>
-						<a
-							class="flex h-10 w-full max-w-52 flex-1 items-center justify-center px-4 py-2 text-xl text-slate-200 transition-all hover:text-white sm:w-auto md:font-bold lg:h-10"
-							aria-label="Contact Page"
-							href={translatePath("/contact/")}>
-							{t("contact")}
-						</a>
-					</div>
-
-					<small>
-						{t("or")}
-						<LinkBlend id="go-projects-button" isButton={true}>{t("hero.scroll")}</LinkBlend>
-					</small>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="mx-auto flex h-full flex-col py-4 lg:py-10">
+    <div class="relative flex flex-1 flex-col justify-around rounded-lg pb-10 pt-20 lg:rounded-2xl">
+      <div class="flex justify-center">
+        <h1 class="text-center font-display text-5xl font-extrabold uppercase sm:text-7xl md:text-8xl lg:text-9xl">
+          <span class="main-title">{t("hero.title.main")}</span>
+          <span class="rotator relative inline-flex h-20 w-full justify-center md:h-24 lg:h-32 overflow-hidden">
+            <span class="rotator-container">
+              <span>{t("hero.title.1")}</span><span>{t("hero.title.2")}</span><span>{t("hero.title.3")}</span><span>
+                {t("hero.title.4")}
+              </span><span>{t("hero.title.1")}</span>
+            </span>
+          </span>
+        </h1>
+      </div>
+      <div class="flex flex-col items-center gap-5 text-center lg:gap-10">
+        <p class="mt-8 max-w-3xl font-mono lg:text-lg">
+          {t("hero.subtitle")}
+        </p>
+        <div class="flex flex-col items-center justify-center gap-3 lg:col-start-1">
+          <div class="squircle-bg rounded-lg bg-zinc-900" data-cursor-hover data-cursor-parallax>
+            <a
+              class="flex h-10 w-full max-w-52 flex-1 items-center justify-center px-4 py-2 text-xl text-slate-200 transition-all hover:text-white sm:w-auto md:font-bold lg:h-10"
+              aria-label="Contact Page"
+              href={translatePath("/contact/")}
+            >
+              {t("contact")}
+            </a>
+          </div>
+          <small>
+            {t("or")}
+            <LinkBlend id="go-projects-button" isButton={true}>{t("hero.scroll")}</LinkBlend>
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <style>
-	.hero {
-		padding-bottom: 0;
-		position: relative;
-		border-radius: inherit;
-		overflow: hidden;
-	}
-	.hero > div {
-		grid-column: 1 / span 12;
-	}
+  .hero {
+    padding-bottom: 0;
+    position: relative;
+    border-radius: inherit;
+    overflow: hidden;
+  }
+  .hero > div {
+    grid-column: 1 / span 12;
+  }
 
-	/* Hero appearance */
-	.hero h1,
-	.hero h2,
-	.hero h3 {
-		margin: 0;
-	}
-	.hero h1 {
-		margin: 0;
-		position: relative;
-		overflow: hidden;
-		visibility: hidden;
-	}
-	.hero h1 > div {
-		position: relative;
-		margin: 0;
-	}
-	.hero :global(.split-parent) {
-		overflow: hidden;
-	}
-	.hero :global(.split-child) {
-		display: inline-block;
-	}
+  /* Hero appearance */
+  .hero h1 {
+    margin: 0;
+    position: relative;
+    visibility: hidden;
+    z-index: 20; /* Above subtitle */
+  }
+  .main-title {
+    position: relative;
+    overflow: hidden;
+    z-index: 15; /* Above rotator */
+  }
 
-	/* Text rotator */
-	.rotator > span {
-		position: absolute;
-	}
+  /* Rotator */
+  .rotator {
+    z-index: 10; /* Below main title */
+    position: relative;
+  }
+  .rotator-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    text-align: center;
+  }
+  .rotator-container > span {
+    position: absolute;
+    width: 100%;
+    left: 0;
+  }
+  .rotator-container > span:not(:nth-child(1)) {
+    opacity: 0;
+  }
 
-	.rotator > span:not(:nth-child(1)) {
-		opacity: 0;
-	}
+  /* Subtitle and lower content */
+  .hero p,
+  .hero div:not(:first-child) {
+    z-index: 5; /* Below all h1 content */
+    position: relative;
+  }
 </style>
 
 <script>
-	import { gsap } from "gsap";
-	import { ScrollTrigger } from "gsap/ScrollTrigger";
-	import { SplitText } from "gsap-trial/SplitText";
-	import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
-	gsap.registerPlugin(ScrollTrigger, SplitText, ScrollToPlugin);
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-	function init() {
-		const childSplit = new SplitText(".hero h1", {
-			type: "lines",
-			linesClass: "split-child",
-		});
-		const parentSplit = new SplitText(".hero h1", {
-			linesClass: "split-parent",
-		});
+  // Simplified line splitting for main title
+  function splitMainTitle(element) {
+    const text = element.textContent.trim();
+    element.innerHTML = "";
+    const words = text.split(" ");
+    let lineSpan = document.createElement("span");
+    lineSpan.classList.add("first-line"); // Still used for structure, no background
+    element.appendChild(lineSpan);
 
-		gsap.timeline()
-			.from(childSplit.lines, {
-				duration: 1.5,
-				yPercent: 100,
-				ease: "power4",
-				stagger: 0.1,
-			})
-			.set(".hero h1", { visibility: "visible" }, "<")
-			.then(() => {
-				const words = document.querySelectorAll(".hero .rotator > span");
+    words.forEach((word) => {
+      const wordSpan = document.createElement("span");
+      wordSpan.textContent = word + " ";
+      wordSpan.style.display = "inline";
+      lineSpan.appendChild(wordSpan);
 
-				let rotatorTimeline = gsap.timeline({ repeat: -1 });
-				rotatorTimeline.timeScale(0.5);
+      const lineHeight = lineSpan.offsetHeight;
+      lineSpan.style.display = "block";
+      if (lineSpan.offsetHeight > lineHeight) {
+        lineSpan = document.createElement("span"); // New line without .first-line
+        lineSpan.style.display = "inline";
+        lineSpan.appendChild(wordSpan);
+        element.appendChild(lineSpan);
+      }
+    });
 
-				for (let i = 0; i < words.length; i++) {
-					let delay = i - 1;
-					let wordTL = gsap.timeline();
-					if (i !== 0) {
-						gsap.set(words[i], { opacity: 1 });
-						wordTL.from(words[i], { duration: 1, yPercent: 100, opacity: 0, ease: "power4.out" });
-					} else {
-						// Handle the first one specially
-						delay += 1;
-						gsap.set(words[0], { opacity: 1, yPercent: 0 });
-					}
+    return element.querySelectorAll("span");
+  }
 
-					if (i !== words.length - 1) {
-						wordTL.to(words[i], { duration: 1, yPercent: -100, opacity: 0, ease: "power4.out" });
-					}
-					rotatorTimeline.add(wordTL, delay);
-				}
-			});
+  function init() {
+    const h1 = document.querySelector(".hero h1");
+    const mainTitle = h1.querySelector(".main-title");
+    const rotator = h1.querySelector(".rotator");
+    const rotatorContainer = rotator.querySelector(".rotator-container");
 
-		var goProjectsButton = document.getElementById("go-projects-button");
-		goProjectsButton?.addEventListener("click", function () {
-			gsap.to(window, { duration: 0.5, scrollTo: "#projects" });
-		});
-	}
+    // Split main title into lines
+    const mainLines = splitMainTitle(mainTitle);
+    const lines = [...mainLines, rotatorContainer];
 
-	document.removeEventListener("DOMContentLoaded", init); // astro:page-load
-	document.addEventListener("DOMContentLoaded", init); // astro:page-load
+    // Set initial state for first line (no background color)
+    const firstLine = mainLines[0];
+    gsap.set(firstLine, {
+      position: "relative",
+      zIndex: 25,
+      width: "100%",
+      padding: "0.2em 0.5em", // Kept for spacing consistency
+      borderRadius: "4px",
+    });
+
+    // Animation for main title and rotator entry
+    gsap.timeline()
+      .from(lines, {
+        duration: 1.5,
+        yPercent: 100,
+        ease: "power4",
+        stagger: 0.1,
+      })
+      .set(".hero h1", { visibility: "visible" }, "<")
+      .then(() => {
+        // Rotator animation within its container
+        const words = rotatorContainer.querySelectorAll("span");
+        let rotatorTimeline = gsap.timeline({ repeat: -1 });
+        rotatorTimeline.timeScale(0.5);
+
+        for (let i = 0; i < words.length; i++) {
+          let delay = i - 1;
+          let wordTL = gsap.timeline();
+          if (i !== 0) {
+            gsap.set(words[i], { opacity: 1 });
+            wordTL.from(words[i], { duration: 1, yPercent: 100, opacity: 0, ease: "power4.out" });
+          } else {
+            delay += 1;
+            gsap.set(words[0], { opacity: 1, yPercent: 0 });
+          }
+          if (i !== words.length - 1) {
+            wordTL.to(words[i], { duration: 1, yPercent: -100, opacity: 0, ease: "power4.out" });
+          }
+          rotatorTimeline.add(wordTL, delay);
+        }
+      });
+
+    // Scroll to projects section
+    const goProjectsButton = document.getElementById("go-projects-button");
+    goProjectsButton?.addEventListener("click", function () {
+      gsap.to(window, { duration: 0.5, scrollTo: "#projects" });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
 </script>

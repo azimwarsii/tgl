@@ -32,9 +32,8 @@ const { class: className } = Astro.props;
 <script>
 	import { gsap } from "gsap";
 	import { ScrollTrigger } from "gsap/ScrollTrigger";
-	//import { DrawSVGPlugin } from "gsap-trial/DrawSVGPlugin";
 
-	gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
+	gsap.registerPlugin(ScrollTrigger);
 
 	function init() {
 		const linePath = document.querySelector(".all-in-one-line-path");

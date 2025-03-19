@@ -289,19 +289,47 @@ const { pathname } = Astro.url;
 <script>
 	import { gsap } from "gsap";
 	import { ScrollTrigger } from "gsap/ScrollTrigger";
-	// import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 
-	gsap.registerPlugin(DrawSVGPlugin, ScrollTrigger);
+	gsap.registerPlugin(ScrollTrigger);
 
 	function init() {
-		gsap.timeline({
+		// Select all paths in the SVG
+		const paths = document.querySelectorAll(".logo-svg path");
+
+		paths.forEach((path) => {
+			const length = path.getTotalLength();
+
+			// Set up initial stroke-dash values to hide the path
+			path.style.strokeDasharray = length;
+			path.style.strokeDashoffset = length;
+			path.style.fill = "transparent";
+		});
+
+		// Animate the drawing of each path
+		const timeline = gsap.timeline({
 			defaults: {
 				duration: 1,
 				ease: "power2.out",
 			},
-		})
-			.from(".logo-svg path", { drawSVG: 0 })
-			.to(".logo-svg path", { fill: "#000", duration: 2 }, "<+=0.5");
+		});
+
+		// Animate stroke-dashoffset to 0 (reveals the path)
+		timeline.to(paths, {
+			strokeDashoffset: 0,
+			stagger: 0.2, // Optional: stagger if multiple paths
+		});
+
+		// Animate fill color after stroke animation
+		timeline.to(
+			paths,
+			{
+				fill: "#000", // Change to your desired fill color
+				duration: 2,
+			},
+			"<+=0.5"
+		);
+
+		// ==== MENU LOGIC ====
 
 		let isHoveringMenu = false;
 		let menuCollapsed = false;
@@ -312,35 +340,34 @@ const { pathname } = Astro.url;
 			return;
 		}
 
-		let menuCollapseTl = gsap
-			.timeline({
-				defaults: {
-					ease: "back.inOut(1.7)",
-					duration: 0.4,
-				},
-				paused: true,
-				onStart: () => {
-					pageLinksUl.classList.add("collapsed");
-				},
-			})
-			.to("header .nav-container", { width: 125 })
-			.to(
-				pageLinksUl,
-				{
-					x: () => {
-						const pathName = window.location.pathname;
+		let menuCollapseTl = gsap.timeline({
+			defaults: {
+				ease: "back.inOut(1.7)",
+				duration: 0.4,
+			},
+			paused: true,
+			onStart: () => {
+				pageLinksUl.classList.add("collapsed");
+			},
+		})
+		.to("header .nav-container", { width: 125 })
+		.to(
+			pageLinksUl,
+			{
+				x: () => {
+					const pathName = window.location.pathname;
 
-						if (pathName === "/" || pathName === "/it/") {
-							return "9.5rem";
-						} else if (pathName.startsWith("/blog") || pathName.startsWith("/it/blog")) {
-							return "3.5rem";
-						}
+					if (pathName === "/" || pathName === "/it/") {
+						return "9.5rem";
+					} else if (pathName.startsWith("/blog") || pathName.startsWith("/it/blog")) {
+						return "3.5rem";
+					}
 
-						return "-3.5rem";
-					},
+					return "-3.5rem";
 				},
-				"<",
-			);
+			},
+			"<"
+		);
 
 		const isTouchDevice = window.matchMedia("(hover: none)").matches;
 
@@ -363,7 +390,7 @@ const { pathname } = Astro.url;
 
 			collapseMenu();
 
-			const navContainer = document.querySelector(".nav-container") as HTMLElement;
+			const navContainer = document.querySelector(".nav-container");
 
 			function mouseEnterHandler() {
 				isHoveringMenu = true;
