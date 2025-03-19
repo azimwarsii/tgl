@@ -5,7 +5,7 @@ import { defineConfig } from "unlighthouse";
  * https://unlighthouse.dev/api/config
  */
 export default defineConfig({
-	site: "majestico.co",
+	site: "thegenesislabs.com",
 	scanner: {
 		exclude: [/^\/cdn-cgi\//],
 	},

@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "@majesticooss/mintaka",
+      "name": "@thegenesislabs",
       "dependencies": {
         "@astrojs/mdx": "4.0.8",
         "@astrojs/rss": "4.0.11",
