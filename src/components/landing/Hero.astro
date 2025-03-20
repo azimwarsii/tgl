@@ -14,12 +14,29 @@ const translatePath = useTranslatedPath(lang);
         <h1 class="text-center font-display text-5xl font-extrabold uppercase sm:text-7xl md:text-8xl lg:text-9xl">
           <span class="main-title">{t("hero.title.main")}</span>
           <span class="rotator relative inline-flex h-20 w-full justify-center md:h-24 lg:h-32 overflow-hidden">
-            <span class="rotator-container">
-              <span>{t("hero.title.1")}</span><span>{t("hero.title.2")}</span><span>{t("hero.title.3")}</span><span>
+            <span class="rotator-container flex flex-col items-center justify-center">
+            
+              <span class="bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 bg-clip-text text-transparent">
+                {t("hero.title.1")}
+              </span>
+              
+              <span class="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+                {t("hero.title.2")}
+              </span>
+              
+              <span class="bg-gradient-to-r from-yellow-400 via-pink-500 to-red-500 bg-clip-text text-transparent">
+                {t("hero.title.3")}
+              </span>
+              
+              <span class="bg-gradient-to-r from-purple-400 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
                 {t("hero.title.4")}
-              </span><span>{t("hero.title.1")}</span>
+              </span>
+              
+              <span class="bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 bg-clip-text text-transparent">
+                {t("hero.title.1")}
+              </span>
+            
             </span>
-          </span>
         </h1>
       </div>
       <div class="flex flex-col items-center gap-5 text-center lg:gap-10">
