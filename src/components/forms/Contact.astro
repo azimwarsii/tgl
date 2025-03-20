@@ -50,7 +50,14 @@ const translatePath = useTranslatedPath(lang);
 			</div>
 		</form>
 	</div>
+	 <!-- ✅ Confirmation message here -->
+	 <div id="form-confirmation" class="hidden pt-10 text-center font-bold text-lg">
+		{t("contact.confirmation")} <!-- Example: "Thank you for your message!" -->
+	  </div>
+	</div>
 </section>
+
+<script type="module" src="../../../functions/api/contact.js"></script>
 
 <style>
 	.gradient-element {
